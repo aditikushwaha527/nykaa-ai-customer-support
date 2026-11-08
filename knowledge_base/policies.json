@@ -1,0 +1,63 @@
+
+[
+  {
+    "id": "POL001",
+    "topic": "Return Window by Category",
+    "content": "Electronics carry a standard 12-month manufacturer warranty unless the product listing specifies otherwise. Selected home appliances may have a 6-month or 12-month warranty depending on the item. Apparel, footwear, and beauty products do not automatically carry a manufacturer warranty. Warranty claims require proof of purchase and may require inspection by an authorised service provider."
+  },
+  {
+    "id": "POL002",
+    "topic": "Cash on Delivery Refund Timelines",
+    "content": "Approved Cash on Delivery refunds are processed through the customer's verified bank account or another supported refund method. Refund processing begins after the returned product passes inspection. The estimated timeline is 5 to 7 business days after approval. Customers should contact support if the refund has not arrived after 7 business days."
+  },
+  {
+    "id": "POL003",
+    "topic": "Delivery Service Level Agreements",
+    "content": "Standard delivery is estimated at 3 to 7 business days after order confirmation. Orders in major metropolitan areas may arrive within 2 to 4 business days. Remote locations may require additional delivery time. Customers can request a shipment status check if an order has not arrived by the estimated delivery date."
+  },
+  {
+    "id": "POL004",
+    "topic": "Reverse Pickup Eligibility",
+    "content": "Reverse pickup is available for eligible return requests within the applicable category return window. Products must meet the relevant return conditions and include required accessories, tags, and original packaging where applicable. Pickup availability depends on the customer's delivery PIN code. If reverse pickup is unavailable, the support team may provide an alternative return procedure."
+  },
+  {
+    "id": "POL005",
+    "topic": "Warranty Terms by Category",
+    "content": "Electronics carry a standard 12-month manufacturer warranty unless the product listing specifies otherwise. Selected home appliances may have a 6-month or 12-month warranty depending on the item. Apparel, footwear, and beauty products do not automatically carry a manufacturer warranty. Warranty claims require proof of purchase and may require inspection by an authorised service provider."
+  },
+  {
+    "id": "POL006",
+    "topic": "Order Cancellation Policy",
+    "content": "Customers may request cancellation while an order is in the Placed status and before shipment processing begins. Orders marked Shipped cannot normally be cancelled through the standard cancellation process. If an order has already shipped, the customer may request a return after delivery if the product is eligible. Approved prepaid cancellations are refunded to the original payment method within 5 to 7 business days."
+  },
+  {
+    "id": "POL007",
+    "topic": "Loyalty Points Redemption",
+    "content": "Registered customers earn loyalty points on eligible completed purchases. Points are credited after the order reaches the Delivered status and the applicable return period has passed. Customers may redeem available points during checkout, subject to minimum order value and redemption limits. Points earned on returned or refunded orders may be reversed."
+  },
+  {
+    "id": "POL008",
+    "topic": "Payment Failure and Retry",
+    "content": "If an online payment fails, customers should first check whether the amount was deducted from their bank or payment account. If no amount was deducted, they may retry the payment using an available payment method. If money was deducted but the order was not confirmed, the payment is reviewed and any confirmed failed-payment refund is generally processed within 5 to 7 business days. Customers should not repeatedly retry while a payment is still pending."
+  },
+  {
+    "id": "POL009",
+    "topic": "Size Exchange Policy",
+    "content": "Size exchanges are available for eligible Apparel and Footwear products within 7 days of delivery. The requested replacement size must be available in inventory. Products must be unused, unwashed, and returned with their original tags and packaging. If the requested size is unavailable, the customer may request a refund or another eligible resolution."
+  },
+  {
+    "id": "POL010",
+    "topic": "Damaged Item Claims",
+    "content": "Customers should report damaged or defective products within 48 hours of delivery for this capstone. They should provide the order ID, a description of the issue, and clear photographs showing the damage. The support team reviews the claim and may arrange an inspection or reverse pickup. An eligible claim may result in a replacement or refund after verification."
+  },
+  {
+    "id": "POL011",
+    "topic": "International Shipping Restrictions",
+    "content": "Orders can be shipped only to supported delivery locations within India. International shipping is not available. Some products may also be restricted from delivery to certain domestic PIN codes because of logistics, safety, or regulatory requirements. Customers should confirm delivery availability by entering their PIN code before placing an order."
+  },
+  {
+    "id": "POL012",
+    "topic": "Customer Support Escalation Matrix",
+    "content": "Routine questions about order status, delivery estimates, and return eligibility are classified as Low risk and handled by the standard support process. Delayed shipments, pending refunds, and unresolved payment issues are classified as Medium risk and may be escalated to a specialist support agent. Suspected fraud, repeated unauthorised transactions, and serious customer safety concerns are classified as High risk and require immediate human review. The support system must not promise a refund or replacement before the required verification is complete."
+  }
+]
