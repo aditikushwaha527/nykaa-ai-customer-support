@@ -243,3 +243,84 @@ The application is an academic capstone implementation and demonstrates an appro
 ## Author
 
 Developed as an Agentic AI capstone project in the E-commerce domain, focusing on Nykaa customer support.
+## Testing and Evaluation
+
+The Nykaa Customer Support System was tested using functional tests, RAG retrieval tests, and Streamlit application tests.
+
+### 1. Functional Testing
+
+| Test Case | Test Input / Scenario | Expected Result | Observed Result |
+|---|---|---|---|
+| Valid order lookup | NYK0001 | Retrieve order details | Passed |
+| Delayed order lookup | NYK0007 | Detect shipment delay and escalation requirement | Passed |
+| Invalid order lookup | INVALID123 | Return order not found | Passed |
+| Duplicate escalation prevention | Check NYK0007 again | Reuse existing ticket instead of creating a duplicate | Passed |
+| COD refund query | Refund timeline for COD orders | Retrieve COD refund policy | Passed |
+| Cancellation query | Cancel order after shipment | Explain cancellation restriction and return option | Passed |
+| Damaged product query | Report a damaged product | Retrieve damage reporting procedure | Passed |
+| Escalation through chatbot | Check NYK0007 | Display escalation reference ESC-NYK0007 | Passed |
+| Admin dashboard | View ESC-NYK0007 | Display ticket and escalation details | Passed |
+| Ticket status update | Change Under Review to Resolved | Save the updated status | Passed |
+| Status persistence | Refresh the dashboard | Retain the Resolved status | Passed |
+
+### 2. RAG Retrieval Evaluation
+
+Two chunking strategies were compared using five evaluation questions:
+
+- Fixed-size chunking (`nykaa_fixed_chunks`)
+- Sentence-based chunking (`nykaa_sentence_chunks`)
+
+| Evaluation Metric | Fixed-Size Chunks | Sentence-Based Chunks |
+|---|---:|---:|
+| Average Precision | 0.3000 | 0.4667 |
+| Average Recall | 0.8000 | 1.0000 |
+
+**Observation:** Sentence-based chunking performed better in this evaluation. It retrieved all expected relevant documents across the five test questions and achieved higher average precision.
+
+### 3. Similarity Threshold Calibration
+
+The evaluation script tested relevant Nykaa questions against unrelated questions.
+
+| Collection | Minimum In-Scope Similarity | Maximum Out-of-Scope Similarity | Proposed Threshold |
+|---|---:|---:|---:|
+| Fixed-size chunks | 0.5240 | 0.2235 | 0.3738 |
+| Sentence-based chunks | 0.5101 | 0.2182 | 0.3642 |
+
+The tested in-scope and out-of-scope questions showed a separation in similarity scores. The active RAG configuration currently uses a similarity threshold of 0.2727.
+
+### 4. Streamlit Application Testing
+
+The Streamlit application was tested through its Customer Support and Admin Escalation Dashboard interfaces.
+
+**Customer Support Interface**
+- Order status lookup
+- COD refund policy questions
+- Cancellation policy questions
+- Damaged product reporting questions
+- Delayed order escalation and ticket reference generation
+
+**Admin Escalation Dashboard**
+- Displaying escalation tickets
+- Viewing ticket details and escalation scores
+- Updating ticket review status
+- Retaining status changes after application refresh
+
+### 5. Test Summary
+
+The core order lookup, policy retrieval, escalation, and ticket management workflows passed the functional tests performed.
+
+The RAG evaluation favoured sentence-based chunking over fixed-size chunking.
+
+### 6. Known Limitations and Future Improvements
+
+- Improve handling of unrelated questions in the Streamlit chat interface.
+- Clean up internal project wording in customer-facing policy responses.
+- Expand the RAG evaluation dataset with more questions and verified relevance labels.
+- Improve retrieval precision and reduce irrelevant retrieved passages.
+- Add conversation memory and stronger input guardrails.
+- Implement independent answer review and additional governance checks.
+- Consider a FastAPI backend for API-based deployment.
+- Add authentication and access control to the admin dashboard.
+- Implement actual external support notifications if required.
+
+**Note:** The project currently uses fictional order records and a deterministic offline Mock LLM. The escalation dashboard maintains a local ticket queue; it does not send external notifications.
