@@ -1,2 +1,2 @@
 ticket_id,record_id,category,order_status,order_value_inr,escalation_score,escalation_threshold,reason,review_status,created_at
-ESC-NYK0007,NYK0007,Electronics,Shipped,1942.0,0.96,0.445,Shipment delayed,Pending,2026-11-08T18:10:20
+ESC-NYK0007,NYK0007,Electronics,Shipped,1942.0,0.96,0.445,Shipment delayed,Resolved,2026-11-08T18:10:20

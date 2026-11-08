@@ -18,11 +18,10 @@ ESCALATION_QUEUE_PATH = (
 
 
 # ==========================================
-# 2. LOAD CUSTOMER ORDERS
+# 2. LOAD ORDERS
 # ==========================================
 
 def load_orders():
-    """Load fictional Nykaa orders from CSV."""
 
     orders = {}
 
@@ -57,16 +56,10 @@ ORDERS = load_orders()
 
 
 # ==========================================
-# 3. ESCALATION SCORE CALCULATION
+# 3. ESCALATION SCORE
 # ==========================================
 
 def calculate_escalation_score(order):
-    """
-    Calculate escalation score between 0 and 1.
-
-    Delayed shipment contributes 60%.
-    Order age contributes 40%.
-    """
 
     delay_component = (
         1.0 if order["delayed_shipment"] else 0.0
@@ -83,11 +76,10 @@ def calculate_escalation_score(order):
 
 
 # ==========================================
-# 4. CALCULATE ESCALATION THRESHOLD
+# 4. ESCALATION THRESHOLD
 # ==========================================
 
 def calculate_escalation_threshold():
-    """Calculate the 80th percentile of order scores."""
 
     scores = sorted(
         calculate_escalation_score(order)
@@ -97,10 +89,7 @@ def calculate_escalation_threshold():
     position = 0.80 * (len(scores) - 1)
 
     lower_index = int(position)
-    upper_index = min(
-        lower_index + 1,
-        len(scores) - 1
-    )
+    upper_index = min(lower_index + 1, len(scores) - 1)
 
     fraction = position - lower_index
 
@@ -116,7 +105,7 @@ ESCALATION_THRESHOLD = calculate_escalation_threshold()
 
 
 # ==========================================
-# 5. GENERATE ESCALATION REASON
+# 5. ESCALATION REASON
 # ==========================================
 
 def generate_escalation_reason(order):
@@ -131,22 +120,17 @@ def generate_escalation_reason(order):
 
     if not reasons:
         reasons.append(
-            "Order risk score meets the escalation threshold"
+            "Order risk score meets escalation threshold"
         )
 
     return "; ".join(reasons)
 
 
 # ==========================================
-# 6. CREATE HUMAN ESCALATION TICKET
+# 6. CREATE ESCALATION TICKET
 # ==========================================
 
 def create_escalation_ticket(order, score):
-    """
-    Create a pending human-review ticket.
-
-    Prevent duplicate tickets for the same order.
-    """
 
     ESCALATION_QUEUE_PATH.parent.mkdir(
         parents=True,
@@ -155,7 +139,6 @@ def create_escalation_ticket(order, score):
 
     ticket_id = f"ESC-{order['record_id']}"
 
-    # Define queue columns.
     fieldnames = [
         "ticket_id",
         "record_id",
@@ -169,34 +152,18 @@ def create_escalation_ticket(order, score):
         "created_at"
     ]
 
-    # Check whether a ticket already exists.
-    existing_ticket = False
+    existing_tickets = get_escalation_queue()
 
-    if ESCALATION_QUEUE_PATH.exists():
+    for ticket in existing_tickets:
 
-        with open(
-            ESCALATION_QUEUE_PATH,
-            mode="r",
-            newline="",
-            encoding="utf-8"
-        ) as file:
+        if ticket["record_id"] == order["record_id"]:
 
-            reader = csv.DictReader(file)
+            return {
+                "ticket_id": ticket_id,
+                "created": False,
+                "message": "An escalation ticket already exists."
+            }
 
-            for row in reader:
-
-                if row.get("record_id") == order["record_id"]:
-                    existing_ticket = True
-                    break
-
-    if existing_ticket:
-        return {
-            "ticket_id": ticket_id,
-            "created": False,
-            "message": "An escalation ticket already exists."
-        }
-
-    # Prepare the new ticket.
     ticket = {
         "ticket_id": ticket_id,
         "record_id": order["record_id"],
@@ -212,8 +179,10 @@ def create_escalation_ticket(order, score):
         )
     }
 
-    # Add the ticket to the CSV queue.
-    file_exists = ESCALATION_QUEUE_PATH.exists()
+    file_exists = (
+        ESCALATION_QUEUE_PATH.exists()
+        and ESCALATION_QUEUE_PATH.stat().st_size > 0
+    )
 
     with open(
         ESCALATION_QUEUE_PATH,
@@ -227,7 +196,7 @@ def create_escalation_ticket(order, score):
             fieldnames=fieldnames
         )
 
-        if not file_exists or ESCALATION_QUEUE_PATH.stat().st_size == 0:
+        if not file_exists:
             writer.writeheader()
 
         writer.writerow(ticket)
@@ -243,8 +212,7 @@ def create_escalation_ticket(order, score):
 # 7. CHECK ORDER STATUS
 # ==========================================
 
-def check_order_status(record_id: str) -> dict:
-    """Look up an order and check its escalation requirement."""
+def check_order_status(record_id: str):
 
     order = ORDERS.get(record_id)
 
@@ -287,11 +255,10 @@ def check_order_status(record_id: str) -> dict:
 
 
 # ==========================================
-# 8. VIEW ESCALATION QUEUE
+# 8. GET ESCALATION QUEUE
 # ==========================================
 
 def get_escalation_queue():
-    """Return all tickets awaiting or undergoing review."""
 
     if not ESCALATION_QUEUE_PATH.exists():
         return []
@@ -309,53 +276,61 @@ def get_escalation_queue():
 
 
 # ==========================================
-# 9. TEST THE ESCALATION SYSTEM
+# 9. UPDATE TICKET REVIEW STATUS
 # ==========================================
 
-if __name__ == "__main__":
+def update_escalation_status(ticket_id, new_status):
 
-    print("=" * 55)
-    print("NYKAA ORDER AND ESCALATION SYSTEM")
-    print("=" * 55)
-
-    print("\nTOTAL ORDERS:", len(ORDERS))
-
-    print(
-        "ESCALATION THRESHOLD:",
-        ESCALATION_THRESHOLD
-    )
-
-    # Find an order that meets the escalation threshold.
-    flagged_orders = [
-        order
-        for order in ORDERS.values()
-        if calculate_escalation_score(order)
-        >= ESCALATION_THRESHOLD
+    allowed_statuses = [
+        "Pending",
+        "Under Review",
+        "Resolved"
     ]
 
-    if flagged_orders:
+    if new_status not in allowed_statuses:
+        raise ValueError("Invalid review status.")
 
-        sample_order = flagged_orders[0]
+    tickets = get_escalation_queue()
 
-        print("\nTESTING AN ESCALATION-ELIGIBLE ORDER:")
+    found = False
 
-        result = check_order_status(
-            sample_order["record_id"]
+    for ticket in tickets:
+
+        if ticket["ticket_id"] == ticket_id:
+
+            ticket["review_status"] = new_status
+            found = True
+            break
+
+    if not found:
+        return False
+
+    fieldnames = [
+        "ticket_id",
+        "record_id",
+        "category",
+        "order_status",
+        "order_value_inr",
+        "escalation_score",
+        "escalation_threshold",
+        "reason",
+        "review_status",
+        "created_at"
+    ]
+
+    with open(
+        ESCALATION_QUEUE_PATH,
+        mode="w",
+        newline="",
+        encoding="utf-8"
+    ) as file:
+
+        writer = csv.DictWriter(
+            file,
+            fieldnames=fieldnames
         )
 
-        print(result)
+        writer.writeheader()
+        writer.writerows(tickets)
 
-    else:
-
-        print("\nNo escalation-eligible orders found.")
-
-    print("\nCURRENT ESCALATION QUEUE:")
-
-    queue = get_escalation_queue()
-
-    for ticket in queue:
-        print(ticket)
-
-    print("\nTOTAL ESCALATION TICKETS:", len(queue))
-
-    print("\nESCALATION SYSTEM TEST COMPLETED!")
+    return True

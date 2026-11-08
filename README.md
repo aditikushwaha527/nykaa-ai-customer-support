@@ -30,6 +30,7 @@ It supports order tracking, policy information retrieval and escalation of order
 | CSV | Order dataset and escalation queue |
 | JSON | Policy knowledge base |
 
+
 ## Implemented Features
 
 ### 1. Customer Order Lookup
@@ -39,37 +40,66 @@ It supports order tracking, policy information retrieval and escalation of order
 - Identifies delayed shipments.
 - Calculates an escalation score for each order.
 
-### 2. Policy-Based Question Answering
+### 2. Policy-Based Question Answering (RAG)
 
 - Uses a knowledge base containing 12 policy documents.
 - Implements fixed-size and sentence-based text chunking.
 - Generates text embeddings using Sentence Transformers.
 - Stores policy chunks in ChromaDB.
 - Retrieves relevant policy information using semantic similarity and keyword-based reranking.
-- Provides answers using an offline deterministic Mock LLM.
+- Provides policy-based answers using an offline deterministic Mock LLM.
+- Includes a fallback response when sufficient relevant policy information is unavailable.
 
 ### 3. CrewAI Integration
 
 - Implements a Nykaa Customer Support Agent.
-- Connects the customer-support task to the Mock LLM.
+- Connects the customer-support task to the offline Mock LLM.
 - Routes order-related queries to the order lookup function.
 - Routes policy-related queries to the RAG retrieval system.
 
-### 4. Escalation Management
+### 4. Offline Mock LLM
+
+- Uses a custom deterministic Mock LLM.
+- Does not require paid API keys or external LLM services.
+- Routes customer queries to the appropriate Python functions.
+- Generates responses using order information and retrieved policy documents.
+
+### 5. Escalation Management
 
 - Calculates an escalation score using shipment delay and order age.
 - Uses the 80th percentile of dataset scores as the escalation threshold.
-- Creates escalation tickets for qualifying orders.
-- Stores tickets in `data/escalation_queue.csv`.
+- Automatically identifies orders requiring human review.
+- Creates unique escalation tickets.
 - Prevents duplicate tickets for the same order.
-- Maintains a Pending review status.
+- Stores escalation records in a CSV file.
+- Maintains ticket information, escalation reasons and review status.
 
-### 5. Streamlit Interface
+### 6. Customer-Facing Escalation Notifications
+
+- Informs customers when an order requires further review.
+- Notifies customers that human review has been initiated.
+- Provides a support reference number for the escalation ticket.
+
+### 7. Admin Escalation Dashboard
+
+- Provides a separate administrator dashboard in Streamlit.
+- Displays total escalation tickets.
+- Shows Pending, Under Review and Resolved ticket counts.
+- Displays order details, escalation scores and reasons.
+- Allows administrators to select individual escalation tickets.
+- Supports updating ticket status to Pending, Under Review or Resolved.
+- Saves status changes in the CSV escalation queue.
+- Retains updated ticket statuses after application refresh.
+
+### 8. Streamlit User Interface
 
 - Provides a chat-based customer-support interface.
 - Displays customer and assistant messages.
 - Supports order-tracking and policy-related questions.
 - Maintains conversation history during the session.
+- Provides a separate Admin Escalation Dashboard.
+- Combines customer assistance and human escalation management in one application.
+
 
 ## Project Structure
 
