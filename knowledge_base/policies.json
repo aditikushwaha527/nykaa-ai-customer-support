@@ -3,7 +3,7 @@
   {
     "id": "POL001",
     "topic": "Return Window by Category",
-    "content": "Electronics carry a standard 12-month manufacturer warranty unless the product listing specifies otherwise. Selected home appliances may have a 6-month or 12-month warranty depending on the item. Apparel, footwear, and beauty products do not automatically carry a manufacturer warranty. Warranty claims require proof of purchase and may require inspection by an authorised service provider."
+    "content": "Apparel and Footwear products may be returned within 7 days of delivery if they are unused and have their original tags and packaging. Eligible Electronics and Home products may be returned within 7 days, subject to product-specific return conditions. Beauty products are generally non-returnable, except for eligible damaged or defective items. All returns require proof of purchase and must satisfy the applicable product conditions."
   },
   {
     "id": "POL002",
@@ -23,7 +23,7 @@
   {
     "id": "POL005",
     "topic": "Warranty Terms by Category",
-    "content": "Electronics carry a standard 12-month manufacturer warranty unless the product listing specifies otherwise. Selected home appliances may have a 6-month or 12-month warranty depending on the item. Apparel, footwear, and beauty products do not automatically carry a manufacturer warranty. Warranty claims require proof of purchase and may require inspection by an authorised service provider."
+    "content": "Electronics carry a standard 12-month manufacturer warranty unless the product listing specifies otherwise. Selected Home appliances may have a 6-month or 12-month warranty depending on the item. Apparel, Footwear, and Beauty products do not automatically carry a manufacturer warranty. Warranty claims require proof of purchase and may require inspection by an authorised service provider."
   },
   {
     "id": "POL006",
@@ -48,7 +48,7 @@
   {
     "id": "POL010",
     "topic": "Damaged Item Claims",
-    "content": "Customers should report damaged or defective products within 48 hours of delivery for this capstone. They should provide the order ID, a description of the issue, and clear photographs showing the damage. The support team reviews the claim and may arrange an inspection or reverse pickup. An eligible claim may result in a replacement or refund after verification."
+    "content": "Customers should report damaged or defective products within 48 hours of delivery. They should provide the order ID, a description of the issue, and clear photographs showing the damage. The support team reviews the claim and may arrange an inspection or reverse pickup. An eligible claim may result in a replacement or refund after verification."
   },
   {
     "id": "POL011",
